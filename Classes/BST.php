@@ -75,6 +75,18 @@ class BST {
         return $x;
         
     }
+    public function deleteMax(){
+        if($this->isEmpty()) throw new Exception("Symbol table underflow");
+        $this->root = deleteMaxEsp($this->root);
+        assert($this->root);
     
+    }
+    private function deleteMaxEsp(Node $x){
+        if($x->getRight()==null) return $x->getLeft();
+        $x->setRight($this->deleteMaxEsp($x->getRight()));
+        $x->setSize($this->size($x->getLeft())+ $this->size($x->getRight())+1);
+        return $x;
+        
+    }
     
 }
