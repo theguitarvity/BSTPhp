@@ -24,7 +24,7 @@ class BST {
     public function size(){
         return sizeEsp($this->root);
     }
-    public function sizeEsp(Node $x){
+    private function sizeEsp(Node $x){
         if($x==null)return 0;
         else return $x->getSize();
     }
@@ -36,9 +36,45 @@ class BST {
     public function get($key){
         return getEsp($this->root, $key);
     }
-    public function getEsp(Node $x, $key){
+    private function getEsp(Node $x,Key $key){
         if($x==null) return null;
+        $cmp = $key->compareTo($x->getKey());
+        if($comp<0) return getEsp($x->getLeft(), $key);
+        else if($comp>0) return getEsp($x->getRight(), $key);
+        else return $x->getValue ();
+    }
+    
+    public function put(Key $key, $val){
+        if($key==null) throw new Exception ("first argument to put() is null");
+        if($val==null){
+            delete($key);
+            return;
+        }
+        $this->root = putEsp($root, $key, $val);
+        assert($this->root);
+    }
+    private function putEsp(Node $x, Key $key, $val){
+        if($x==null) return new Node($key, $val, 1);
+        $cmp = $key->compareTo($x->getKey());
+        if($cmp<0) $x->setLeft (putEsp($x->getLeft (), $key, $val));
+        else if($cmp>0) $x->getRight(putEsp($x->getRight(), $key, $val));
+        else $x->setValue($val);
+        $x->setSize(1+ $this->size($x->getLeft()) + $this->size($x->getRight()));
+        return $x;
+    }
+    
+    public function deleteMin(){
+        if($this->isEmpty()) throw new Exception ("Symbol table underflow");
+        $this->root = deleteMinEsp($this->root);
+        assert($this->root);
+    }
+    private function deleteMinEsp(Node $x){
+        if($x->getLeft()==null) return $x->getRight();
+        $x->setLeft($this->deleteMinEsp($x->getLeft()));
+        $x->setSize($this->size($x->getLeft())+ $this->size($x->getRight())+1);
+        return $x;
         
     }
+    
     
 }
