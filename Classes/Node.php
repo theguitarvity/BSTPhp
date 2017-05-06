@@ -20,8 +20,27 @@ class Node {
     private $key;
     private $size;
     private $value;
-    
-    function getLeft() {
+    function setLeft(Node $left) {
+        $this->left = $left;
+    }
+
+    function setRight(Node $right) {
+        $this->right = $right;
+    }
+
+    function setKey($key) {
+        $this->key = $key;
+    }
+
+    function setSize($size) {
+        $this->size = $size;
+    }
+
+    function setValue($value) {
+        $this->value = $value;
+    }
+
+        function getLeft() {
         return $this->left;
     }
 
@@ -41,7 +60,7 @@ class Node {
         return $this->value;
     }
 
-        function __construct($key, $value, $size) {
+        function __construct(Key $key, $value, $size) {
         $this->key = $key;
         $this->value = $value;
         $this->size = $size;
